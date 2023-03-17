@@ -26,7 +26,7 @@ export const signup = (req,res) => {
       }
 
       if (data) {
-        fs.unlinkSync(req.file.path); // Empty temp folder
+        fs.unlinkSync(req.file.path); 
         const locationUrl = data.Location;
 
         const newFile = { ...req.body, file: locationUrl };
