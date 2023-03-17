@@ -1,5 +1,20 @@
-import app from './app';
 import mongoose from 'mongoose';
+import express from 'express';
+import dotenv from 'dotenv';
+import Routes from './src/routes/api.js';
+
+const app = express();
+
+dotenv.config();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api', Routes);
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Welcome to my API' });
+});
+
 
 //connect to mongodb
 async function connect(){
