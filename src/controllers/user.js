@@ -51,18 +51,18 @@ export const getFiles = async (req,res) => {
   }
 }
 
-export const registration = async (req,res) => {
+// export const registration = async (req,res) => {
 
-    const user = req.body;
+//     const user = req.body;
 
-    const newUser = new User(user);
+//     const newUser = new User(user);
 
-    try{
-        await newUser.save();
-        res.status(201).json(newUser);
-    }catch(error){
-        res.status(404).json({ message : error.message});
-    }
+//     try{
+//         await newUser.save();
+//         res.status(201).json(newUser);
+//     }catch(error){
+//         res.status(404).json({ message : error.message});
+//     }
 
   // const dash = database.collection('users');
 
@@ -74,6 +74,40 @@ export const registration = async (req,res) => {
   // const document = {username:req.body.username, email:req.body.email, password:req.body.password, isAdmin:false};
   // const data = await dash.insertOne(document);
   // return res.json({status:200,message:"Success"});
+//}
+
+export const registration = async (req,res) => {
+
+    const result = await User.findOne({email:req.body.email});
+    if(result){return res.json({status:500,message:"User exist, try with another email."})}
+
+    const user = req.body;
+    const newUser = new User(user);
+    try{
+        await newUser.save();
+        res.status(201).json(newUser);
+    }catch(error){
+        res.status(404).json({ message : error.message});
+    }
 }
+
+export const login = async (req,res) => {
+  try{
+      const user = await User.findOne({email:req.body.email, password:req.body.password});
+      if(user){
+        res.json({
+          status:200,
+          username: user.username,
+          email: user.email,
+          accessToken,
+          refreshToken,
+          });
+      }
+      return res.json({status:403, message:"Login failed"});
+  }catch(error){
+      res.status(404).json({ message : error.message});
+  }
+}
+
 
 
