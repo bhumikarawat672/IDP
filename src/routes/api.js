@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { signup , getFiles , registration } from '../controllers/user.js';
+import { signup , getFiles , registration, login } from '../controllers/user.js';
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router
 router.get('/allfiles', getFiles)
 
 router.post('/signup',registration)
-
+router.post('/login',login)
 
 
 export default router;
