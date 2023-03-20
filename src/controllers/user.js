@@ -70,6 +70,8 @@ export const login = async (req,res) => {
   try{
       const user = await User.findOne({email:req.body.email, password:req.body.password});
       if(user){
+        const accessToken = generateAccessToken(user);
+        const refreshToken = generateRefreshToken(user);
         res.json({
           status:200,
           username: user.username,
@@ -90,7 +92,7 @@ export const login = async (req,res) => {
     });
   };
 
-   const generateRefreshToken = (user) => {
+  const generateRefreshToken = (user) => {
     return jwt.sign({ email: user.email }, "myRefreshSecretKey");
   };
 
