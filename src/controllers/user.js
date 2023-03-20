@@ -51,31 +51,6 @@ export const getFiles = async (req,res) => {
   }
 }
 
-// export const registration = async (req,res) => {
-
-//     const user = req.body;
-
-//     const newUser = new User(user);
-
-//     try{
-//         await newUser.save();
-//         res.status(201).json(newUser);
-//     }catch(error){
-//         res.status(404).json({ message : error.message});
-//     }
-
-  // const dash = database.collection('users');
-
-  // const query = {email: req.body.email};
-  // const result = await dash.findOne(query);
-  
-  // if(result){return res.json({status:500,message:"User exist, try with another email."})}
-  
-  // const document = {username:req.body.username, email:req.body.email, password:req.body.password, isAdmin:false};
-  // const data = await dash.insertOne(document);
-  // return res.json({status:200,message:"Success"});
-//}
-
 export const registration = async (req,res) => {
 
     const result = await User.findOne({email:req.body.email});
@@ -109,5 +84,14 @@ export const login = async (req,res) => {
   }
 }
 
+  const generateAccessToken = (user) => {
+   return jwt.sign({ email: user.email }, "mySecretKey", {
+     expiresIn: "120m",
+    });
+  };
+
+   const generateRefreshToken = (user) => {
+    return jwt.sign({ email: user.email }, "myRefreshSecretKey");
+  };
 
 
